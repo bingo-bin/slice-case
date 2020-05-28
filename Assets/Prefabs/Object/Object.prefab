@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2672595212640870334}
   m_Layer: 0
-  m_Name: Object 1
+  m_Name: Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 2672595213098944004}
   - component: {fileID: 2672595213098944011}
   - component: {fileID: 2672595213098944005}
-  - component: {fileID: 2672595213098944009}
+  - component: {fileID: 2672595212817330062}
   m_Layer: 0
   m_Name: Candle
   m_TagString: Untagged
@@ -127,8 +127,8 @@ MonoBehaviour:
   defaultSliceMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   asynchronously: 0
   useLazyRunner: 0
---- !u!65 &2672595213098944009
-BoxCollider:
+--- !u!64 &2672595212817330062
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -137,6 +137,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0440361, y: 3.3473928, z: 1.0870109}
-  m_Center: {x: -0.0011337698, y: 1.4615146, z: -0.008062543}
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4950187940882199720, guid: c8b7e90e9a2b42941938a85b859a12db, type: 3}
