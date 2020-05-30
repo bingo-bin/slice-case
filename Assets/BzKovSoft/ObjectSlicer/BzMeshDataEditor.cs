@@ -9,6 +9,8 @@ namespace BzKovSoft.ObjectSlicer
 {
 	public class BzMeshDataEditor
 	{
+		private const float MinPointDistanceSqr = 0.000001f;
+		private const float MinPointAngle = 0.0001f;
 		public List<IndexVector> CapEdges = new List<IndexVector>();
 		readonly IBzSliceAdapter _adapter;
 		readonly bool _skipIfNotClosed;
@@ -42,10 +44,10 @@ namespace BzKovSoft.ObjectSlicer
 			Vector3 enter;
 			float ratioIn = CalcGetRatio(v1, v2, out enter);
 
-			if (Mathf.Abs((enter - v1).sqrMagnitude) <= float.Epsilon)
+			if ((enter - v1).sqrMagnitude <= float.Epsilon)
 				return from;
 
-			if (Mathf.Abs((enter - v2).sqrMagnitude) <= float.Epsilon)
+			if ((enter - v2).sqrMagnitude <= float.Epsilon)
 				return to;
 
 			result = _meshData.Vertices.Count;
@@ -398,7 +400,7 @@ namespace BzKovSoft.ObjectSlicer
 					Vector3 firstValue = _meshData.Vertices[indices.first.value];
 					Vector3 lastValue = prevValue;
 
-					if (firstValue != lastValue)
+					if ((firstValue - lastValue).sqrMagnitude < MinPointDistanceSqr)
 					{
 						continue;
 					}
@@ -415,12 +417,12 @@ namespace BzKovSoft.ObjectSlicer
 
 					var v = _meshData.Vertices[current.value];
 
-					if (prevValue == v)
+					if ((prevValue - v).sqrMagnitude < MinPointDistanceSqr)
 					{
 						// delete same positions
 						current.Remove();
 					}
-					else if (Mathf.Abs(((prevValue - prevValue2).normalized - (v - prevValue).normalized).sqrMagnitude) < 0.00001f)
+					else if (Vector3.Angle(prevValue - prevValue2, v - prevValue) < MinPointAngle)
 					{
 						// delete position that do not change the direction of line
 						prevValue = v;
@@ -458,14 +460,14 @@ namespace BzKovSoft.ObjectSlicer
 					var restFirstValue = _meshData.Vertices[joinCandidate.Value.first.value];
 					var restLastValue = _meshData.Vertices[joinCandidate.Value.last.value];
 
-					if (listLastValue == restFirstValue)
+					if ((listLastValue - restFirstValue).sqrMagnitude < MinPointDistanceSqr)
 					{
 						joinCandidate.Value.first.Remove();// to avoid duplication of the same index when concatinaiting
 						childList = LinkedLoop.ConcatList(childList, joinCandidate.Value);
 						jointFound = true;
 						break;
 					}
-					else if (listFirstValue == restLastValue)
+					else if ((listFirstValue - restLastValue).sqrMagnitude < MinPointDistanceSqr)
 					{
 						childList.first.Remove();
 						childList = LinkedLoop.ConcatList(joinCandidate.Value, childList);

@@ -325,7 +325,7 @@ namespace BzKovSoft.ObjectSlicer.Polygon
 			Vector3 vB = v3 - v2;
 			Vector3 vC = Vector3.Cross(vB, vA);
 
-			if (vC.z >= 0.00001f)
+			if (vC.z >= -0.00001f)
 			{
 				return false;
 			}
@@ -428,7 +428,8 @@ namespace BzKovSoft.ObjectSlicer.Polygon
 
 				var dir1 = v2 - v1;
 				var dir2 = v3 - v1;
-				var normal = Vector3.Cross(dir1.normalized, dir2.normalized);
+				
+				var normal = Normalize(Vector3.Cross(Normalize(dir1), Normalize(dir2)));
 
 				meshData.normals[i1] += normal;
 				meshData.normals[i2] += normal;

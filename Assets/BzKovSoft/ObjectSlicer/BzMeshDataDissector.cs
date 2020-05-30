@@ -188,12 +188,16 @@ namespace BzKovSoft.ObjectSlicer
 			if (meshData.Vertices.Count < 3)
 				return false;
 
-			for (int i = 0; i < meshData.Vertices.Count; i++)
+			for (int si = 0; si < meshData.SubMeshes.Length; si++)
 			{
-				var pos = _adapter.GetWorldPos(meshData, i);
+				var subMesh = meshData.SubMeshes[si];
+				for (int i = 0; i < subMesh.Length; i++)
+			{
+					var pos = _adapter.GetWorldPos(meshData, subMesh[i]);
 				float dist = _plane.GetDistanceToPoint(pos);
 				if (Math.Abs(dist) > MinWidth)
 					return true;
+			}
 			}
 
 			return false;
